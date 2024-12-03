@@ -99,30 +99,30 @@ function applyTheme() {
     document.body.className = theme.background + ' min-h-screen';
     
     const calculator = document.querySelector('.calculator-container');
-    calculator.className = `calculator-container ${theme.calculator} p-8 rounded-3xl shadow-2xl w-full max-w-xl`;
+    calculator.className = `calculator-container ${theme.calculator} p-4 sm:p-6 md:p-8 rounded-3xl shadow-2xl w-full max-w-xl mx-auto`;
     
     const displayInput = document.getElementById('display');
-    displayInput.className = `w-full p-6 text-right text-4xl border-none rounded-2xl ${theme.display} shadow-inner font-bold tracking-wider`;
+    displayInput.className = `w-full p-3 sm:p-4 md:p-6 text-right text-2xl sm:text-3xl md:text-4xl border-none rounded-2xl ${theme.display} shadow-inner font-bold tracking-wider`;
     
     const numberButtons = document.querySelectorAll('.number-btn');
     const operatorButtons = document.querySelectorAll('.operator-btn');
     const functionButtons = document.querySelectorAll('.function-btn');
     
     numberButtons.forEach(btn => {
-        btn.className = `number-btn ${theme.buttons.number} p-6 rounded-2xl shadow-lg active:shadow-inner active:translate-y-0.5 transform hover:translate-y-1 text-2xl font-bold transition-all duration-100`;
+        btn.className = `number-btn ${theme.buttons.number} p-2 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-lg active:shadow-inner active:translate-y-0.5 transform hover:translate-y-1 text-lg sm:text-xl md:text-2xl font-bold transition-all duration-100`;
     });
     
     operatorButtons.forEach(btn => {
-        btn.className = `operator-btn ${theme.buttons.operator} p-6 rounded-2xl shadow-lg active:shadow-inner active:translate-y-0.5 transform hover:translate-y-1 text-2xl font-bold transition-all duration-100`;
+        btn.className = `operator-btn ${theme.buttons.operator} p-2 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-lg active:shadow-inner active:translate-y-0.5 transform hover:translate-y-1 text-lg sm:text-xl md:text-2xl font-bold transition-all duration-100`;
     });
     
     functionButtons.forEach(btn => {
-        btn.className = `function-btn ${theme.buttons.function} p-6 rounded-2xl shadow-lg active:shadow-inner active:translate-y-0.5 transform hover:translate-y-1 text-2xl font-bold transition-all duration-100`;
+        btn.className = `function-btn ${theme.buttons.function} p-2 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-lg active:shadow-inner active:translate-y-0.5 transform hover:translate-y-1 text-lg sm:text-xl md:text-2xl font-bold transition-all duration-100`;
     });
     
     const settingsButtons = document.querySelectorAll('.settings-btn');
     settingsButtons.forEach(btn => {
-        btn.className = `settings-btn ${theme.settingsButton} p-2 rounded-lg active:shadow-inner active:translate-y-0.5 transform hover:translate-y-1 transition-all duration-100`;
+        btn.className = `settings-btn ${theme.settingsButton} p-1 sm:p-1.5 md:p-2 rounded-lg active:shadow-inner active:translate-y-0.5 transform hover:translate-y-1 transition-all duration-100`;
     });
 }
 
