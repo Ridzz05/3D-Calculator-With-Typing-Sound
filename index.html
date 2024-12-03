@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gradient-to-br from-gray-800 to-gray-900 min-h-screen">
     <!-- Tombol pengaturan tema dan suara -->
-    <div class="fixed top-4 right-4 flex gap-2">
+    <div class="fixed top-2 sm:top-4 right-2 sm:right-4 flex gap-1 sm:gap-2">
         <button onclick="toggleTheme()" class="settings-btn bg-gray-700 p-2 rounded-lg text-white hover:bg-gray-600">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
@@ -23,13 +23,13 @@
         </button>
     </div>
 
-    <div class="container mx-auto h-screen flex items-center justify-center p-4">
+    <div class="container mx-auto h-screen flex items-center justify-center p-2 sm:p-4">
         <div class="calculator-container bg-gray-800 p-8 rounded-3xl shadow-2xl w-full max-w-xl">
             <div class="mb-8">
                 <input type="text" id="display" class="w-full p-6 text-right text-4xl border-none rounded-2xl bg-gray-700 text-white shadow-inner" readonly>
             </div>
             
-            <div class="grid grid-cols-4 gap-4">
+            <div class="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4">
                 <button class="function-btn bg-gray-700 p-6 rounded-2xl shadow-lg hover:bg-gray-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); clearDisplay()">C</button>
                 <button class="function-btn bg-gray-700 p-6 rounded-2xl shadow-lg hover:bg-gray-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); deleteLastChar()">DEL</button>
                 <button class="function-btn bg-gray-700 p-6 rounded-2xl shadow-lg hover:bg-gray-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendOperator('%')">%</button>
