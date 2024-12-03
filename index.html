@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator 3D Fullscreen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-800 to-gray-900 min-h-screen">
+    <!-- Tombol pengaturan tema dan suara -->
+    <div class="fixed top-4 right-4 flex gap-2">
+        <button onclick="toggleTheme()" class="settings-btn bg-gray-700 p-2 rounded-lg text-white hover:bg-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+        </button>
+        
+        <button onclick="toggleSound()" class="settings-btn bg-gray-700 p-2 rounded-lg text-white hover:bg-gray-600 relative">
+            <svg id="soundIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M6.343 9.657a4 4 0 115.657 5.657l-5.657-5.657z" />
+            </svg>
+            <span id="soundIndicator" class="absolute -top-1 -right-1 bg-orange-500 text-xs rounded-full w-4 h-4 flex items-center justify-center">1</span>
+        </button>
+    </div>
+
+    <div class="container mx-auto h-screen flex items-center justify-center p-4">
+        <div class="calculator-container bg-gray-800 p-8 rounded-3xl shadow-2xl w-full max-w-xl">
+            <div class="mb-8">
+                <input type="text" id="display" class="w-full p-6 text-right text-4xl border-none rounded-2xl bg-gray-700 text-white shadow-inner" readonly>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-4">
+                <button class="function-btn bg-gray-700 p-6 rounded-2xl shadow-lg hover:bg-gray-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); clearDisplay()">C</button>
+                <button class="function-btn bg-gray-700 p-6 rounded-2xl shadow-lg hover:bg-gray-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); deleteLastChar()">DEL</button>
+                <button class="function-btn bg-gray-700 p-6 rounded-2xl shadow-lg hover:bg-gray-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendOperator('%')">%</button>
+                <button class="operator-btn bg-orange-500 p-6 rounded-2xl shadow-lg hover:bg-orange-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendOperator('/')">/</button>
+                
+                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('7')">7</button>
+                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('8')">8</button>
+                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('9')">9</button>
+                <button class="operator-btn bg-orange-500 p-6 rounded-2xl shadow-lg hover:bg-orange-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendOperator('*')">×</button>
+                
+                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('4')">4</button>
+                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('5')">5</button>
+                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('6')">6</button>
+                <button class="operator-btn bg-orange-500 p-6 rounded-2xl shadow-lg hover:bg-orange-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendOperator('-')">-</button>
+                
+                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('1')">1</button>
+                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('2')">2</button>
+                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('3')">3</button>
+                <button class="operator-btn bg-orange-500 p-6 rounded-2xl shadow-lg hover:bg-orange-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendOperator('+')">+</button>
+                
+                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold col-span-2" onclick="playSound(); appendNumber('0')">0</button>
+                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendDecimal()">.</button>
+                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendDecimal()">,</button>
+                <button class="operator-btn bg-orange-500 p-6 rounded-2xl shadow-lg hover:bg-orange-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); calculate()">=</button>
+            </div>
+        </div>
+    </div>
+    <!-- Elemen audio untuk suara ketikan -->
+    <audio id="keySound" src="sound/click1.wav" preload="auto"></audio>
+    <script src="script.js"></script>
+</body>
+</html>
