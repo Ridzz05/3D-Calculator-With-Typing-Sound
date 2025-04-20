@@ -2,62 +2,119 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator 3D Fullscreen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Modern 3D Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s ease;
+            overscroll-behavior: none;
+            touch-action: manipulation;
+        }
+        .calculator-container {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 360px;
+        }
+        @media (min-width: 640px) {
+            .calculator-container {
+                max-width: 420px;
+            }
+        }
+        .calc-btn {
+            transition: all 0.15s ease;
+            backface-visibility: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .calc-btn:active {
+            transform: translateY(2px) scale(0.95);
+        }
+        #display {
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        /* Fix button height on mobile */
+        @media (max-width: 639px) {
+            .calc-btn {
+                padding-top: 0.9rem;
+                padding-bottom: 0.9rem;
+                font-size: 1.1rem;
+            }
+            #display {
+                font-size: 1.75rem;
+            }
+            #calculation-display {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-gray-800 to-gray-900 min-h-screen">
-    <!-- Tombol pengaturan tema dan suara -->
-    <div class="fixed top-2 sm:top-4 right-2 sm:right-4 flex gap-1 sm:gap-2">
-        <button onclick="toggleTheme()" class="settings-btn bg-gray-700 p-2 rounded-lg text-white hover:bg-gray-600">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 min-h-screen flex items-center justify-center p-2 sm:p-4">
+    <!-- Theme and sound toggle buttons -->
+    <div class="fixed top-2 right-2 sm:top-4 sm:right-4 flex gap-2 sm:gap-3 z-10">
+        <button onclick="toggleTheme()" class="settings-btn bg-white/20 p-2 sm:p-3 rounded-full text-white hover:bg-white/30 backdrop-blur-md transition-all duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
         </button>
         
-        <button onclick="toggleSound()" class="settings-btn bg-gray-700 p-2 rounded-lg text-white hover:bg-gray-600 relative">
-            <svg id="soundIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button onclick="toggleSound()" class="settings-btn bg-white/20 p-2 sm:p-3 rounded-full text-white hover:bg-white/30 backdrop-blur-md transition-all duration-300 relative">
+            <svg id="soundIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M6.343 9.657a4 4 0 115.657 5.657l-5.657-5.657z" />
             </svg>
-            <span id="soundIndicator" class="absolute -top-1 -right-1 bg-orange-500 text-xs rounded-full w-4 h-4 flex items-center justify-center">1</span>
+            <span id="soundIndicator" class="absolute -top-1 -right-1 bg-orange-500 text-xs rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center font-bold">1</span>
         </button>
     </div>
 
-    <div class="container mx-auto h-screen flex items-center justify-center p-2 sm:p-4">
-        <div class="calculator-container bg-gray-800 p-8 rounded-3xl shadow-2xl w-full max-w-xl">
-            <div class="mb-8">
-                <input type="text" id="display" class="w-full p-6 text-right text-4xl border-none rounded-2xl bg-gray-700 text-white shadow-inner" readonly>
-            </div>
-            
-            <div class="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4">
-                <button class="function-btn bg-gray-700 p-6 rounded-2xl shadow-lg hover:bg-gray-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); clearDisplay()">C</button>
-                <button class="function-btn bg-gray-700 p-6 rounded-2xl shadow-lg hover:bg-gray-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); deleteLastChar()">DEL</button>
-                <button class="function-btn bg-gray-700 p-6 rounded-2xl shadow-lg hover:bg-gray-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendOperator('%')">%</button>
-                <button class="operator-btn bg-orange-500 p-6 rounded-2xl shadow-lg hover:bg-orange-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendOperator('/')">/</button>
-                
-                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('7')">7</button>
-                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('8')">8</button>
-                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('9')">9</button>
-                <button class="operator-btn bg-orange-500 p-6 rounded-2xl shadow-lg hover:bg-orange-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendOperator('*')">×</button>
-                
-                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('4')">4</button>
-                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('5')">5</button>
-                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('6')">6</button>
-                <button class="operator-btn bg-orange-500 p-6 rounded-2xl shadow-lg hover:bg-orange-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendOperator('-')">-</button>
-                
-                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('1')">1</button>
-                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('2')">2</button>
-                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendNumber('3')">3</button>
-                <button class="operator-btn bg-orange-500 p-6 rounded-2xl shadow-lg hover:bg-orange-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendOperator('+')">+</button>
-                
-                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold col-span-2" onclick="playSound(); appendNumber('0')">0</button>
-                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendDecimal()">.</button>
-                <button class="number-btn bg-gray-600 p-6 rounded-2xl shadow-lg hover:bg-gray-500 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); appendDecimal()">,</button>
-                <button class="operator-btn bg-orange-500 p-6 rounded-2xl shadow-lg hover:bg-orange-600 transform hover:translate-y-1 text-white text-2xl font-bold" onclick="playSound(); calculate()">=</button>
+    <div class="calculator-container bg-white/10 backdrop-blur-lg p-4 sm:p-6 rounded-3xl mx-auto">
+        <!-- Calculator header with display -->
+        <div class="mb-4 sm:mb-6">
+            <div class="bg-white/20 rounded-2xl p-3 sm:p-4 backdrop-blur-md">
+                <div class="text-right text-gray-400 text-sm mb-1 min-h-5" id="calculation-display"></div>
+                <input type="text" id="display" class="w-full text-right text-3xl sm:text-4xl bg-transparent border-none outline-none text-white font-semibold" readonly>
             </div>
         </div>
+        
+        <!-- Calculator buttons -->
+        <div class="grid grid-cols-4 gap-2 sm:gap-3">
+            <button class="function-btn calc-btn bg-red-500/90 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); clearDisplay()">C</button>
+            <button class="function-btn calc-btn bg-amber-500/90 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); deleteLastChar()">⌫</button>
+            <button class="function-btn calc-btn bg-indigo-500/90 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendOperator('%')">%</button>
+            <button class="operator-btn calc-btn bg-teal-500/90 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendOperator('/')">÷</button>
+            
+            <button class="number-btn calc-btn bg-white/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendNumber('7')">7</button>
+            <button class="number-btn calc-btn bg-white/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendNumber('8')">8</button>
+            <button class="number-btn calc-btn bg-white/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendNumber('9')">9</button>
+            <button class="operator-btn calc-btn bg-teal-500/90 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendOperator('*')">×</button>
+            
+            <button class="number-btn calc-btn bg-white/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendNumber('4')">4</button>
+            <button class="number-btn calc-btn bg-white/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendNumber('5')">5</button>
+            <button class="number-btn calc-btn bg-white/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendNumber('6')">6</button>
+            <button class="operator-btn calc-btn bg-teal-500/90 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendOperator('-')">−</button>
+            
+            <button class="number-btn calc-btn bg-white/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendNumber('1')">1</button>
+            <button class="number-btn calc-btn bg-white/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendNumber('2')">2</button>
+            <button class="number-btn calc-btn bg-white/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendNumber('3')">3</button>
+            <button class="operator-btn calc-btn bg-teal-500/90 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendOperator('+')">+</button>
+            
+            <button class="number-btn calc-btn bg-white/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendNegative()">±</button>
+            <button class="number-btn calc-btn bg-white/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendNumber('0')">0</button>
+            <button class="number-btn calc-btn bg-white/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); appendDecimal()">.</button>
+            <button class="operator-btn calc-btn bg-gradient-to-r from-emerald-500 to-teal-500 p-4 sm:p-5 rounded-xl sm:rounded-2xl text-white text-lg sm:text-xl font-semibold" onclick="playSound(); calculate()">=</button>
+        </div>
     </div>
-    <!-- Elemen audio untuk suara ketikan -->
+    <!-- Audio for typing sound effects -->
     <audio id="keySound" src="sound/click1.wav" preload="auto"></audio>
     <script src="script.js"></script>
 </body>
